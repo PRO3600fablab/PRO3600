@@ -1,29 +1,34 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#ifndef __Widget_h_
+#define __Widget_h_
+#include "Widget.h"
+#endif 
 #define proportion 0.6
-class InputBox{
+class InputBox : public Widget{
     public:
     //initialisation
-    InputBox(){}
-    InputBox(sf::Color colorarg,int loc0,int loc1, int siz0, int siz1,sf::Font &font){};
+    InputBox();
+    InputBox(sf::Color colorarg,int loc0,int loc1, int siz0, int siz1,sf::Font &font, float * render);
 
-    void initRectangles(int loc0, int loc1){};
+    void initRectangles(int loc0, int loc1);
     
-    void initTexts(sf::Font &font){};
+    void initTexts(sf::Font &font);
 
     //getter & setter
-    void setFont(sf::Font &font){};
+    void setFont(sf::Font &font);
 
     //render function
-    void chooseColor(int i){};
+    void chooseColor(int i);
     
-    void drawTo(sf::RenderWindow &window){};
+    void drawTo(sf::RenderWindow &window);
 
-    float render(bool clicked,sf::RenderWindow &window){};
+    void render(bool clicked,sf::RenderWindow &window);
 
-    int detect(sf::RenderWindow &window){};
+    int detect(sf::RenderWindow &window);
     
     private:
+    float * renderValue;
     //geometric properties
     sf::Vector2f size;
     sf::Vector2f location;

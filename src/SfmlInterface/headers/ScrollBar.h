@@ -10,22 +10,22 @@ so the bar starts and ends 5% before the limit defined by the variable location
 
 class ScrollBar : public Widget {
 
-    void initShapes(int loc0, int loc1){};
+    void initShapes(int loc0, int loc1);
 
     //getter & setter
-    void changeProgress(float pro){};
+    void changeProgress(float pro);
 
     //render function
     
-    void updateCursor(){};
+    void updateCursor();
     
-    void chooseColor(bool b){};
+    void chooseColor(bool b);
     
-    void drawTo(sf::RenderWindow &window){};
+    void drawTo(sf::RenderWindow &window);
 
-    bool render(bool clicked,sf::RenderWindow &window){};
+    bool render(bool clicked,sf::RenderWindow &window);
 
-    bool detect(sf::RenderWindow &window){};
+    bool detect(sf::RenderWindow &window);
     //utilitary fonction
 
 

@@ -1,29 +1,33 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#ifndef __Widget_h_
+#define __Widget_h_
 #include "Widget.h"
-class ButtonSwitch:public Widget{
+#endif 
+class ButtonSwitch : public Widget{
     public:
     //initialisation
-    ButtonSwitch(){};
-    ButtonSwitch(int tsize,sf::Color color,bool sel,int loc0,int loc1, int siz0, int siz1, std::string textTrue,std::string textFalse){};
+    ButtonSwitch();
+    ButtonSwitch(int tsize,sf::Color color,bool sel,int loc0,int loc1, int siz0, int siz1, std::string textTrue,std::string textFalse, bool * render){};
 
-    void initRectangle(int loc0, int loc1){};
+    void initRectangle(int loc0, int loc1);
 
     //getter & setter
-    void setFont(sf::Font &font){};
+    void setFont(sf::Font &font);
 
-    void changePosition(float pos[2]){};
+    void changePosition(float pos[2]);
 
     //render function
-    void chooseColor(bool b){};
+    void chooseColor(bool b);
 
-    void drawTo(sf::RenderWindow &window){};
+    void drawTo(sf::RenderWindow &window);
 
-    bool render(bool clicked,sf::RenderWindow &window){};
+    void render(bool clicked,sf::RenderWindow &window);
 
-    bool detect(sf::RenderWindow &window){};
+    bool detect(sf::RenderWindow &window);
     
     private:
+    bool * renderValue;
     std::string textContent[2];// textContent[0] is text to display when false, 1 when true
     bool state;
     int textSize;

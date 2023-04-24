@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
 class Widget{
     public:
-        virtual bool render(bool clicked,sf::RenderWindow &window){};
+        virtual void render(sf::RenderWindow &window, bool clicked);
 };

@@ -9,12 +9,12 @@ string displayVect(vector<vector<float>> v){};
     
 class VectorMaths{
     public:
-    VectorMaths(){}
+    VectorMaths();
     
 
-    void increaseMatrix(vector<vector<double> > matrix){};
+    void increaseMatrix(vector<vector<double> > matrix);
 
-    void beginMatrix(vector<vector<double> > matrix, int n){};
+    void beginMatrix(vector<vector<double> > matrix, int n);
     
-    void del(vector<vector<double> > matrix){};
+    void del(vector<vector<double> > matrix);
 };

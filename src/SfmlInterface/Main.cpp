@@ -1,10 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "Button.cpp"
 #include "ScrollBar.cpp"
-#include "InputBox.cpp"
 #include "VectorMaths.cpp"
-#include "ButtonSwitch.cpp"
+#include "./headers/Scene.h"
 using namespace std;
 int main()
 {
@@ -31,31 +29,44 @@ int main()
     //loading font
     sf::Font arialFont;
 
-    if (!arialFont.loadFromFile("./src/arial.ttf"))
+    if (!arialFont.loadFromFile("./srcFont/arial.ttf"))
     {
         std::cout<<"impossible de charger la font";
     };
 
+    //widgets for scene one :
+    Scene scene1 = Scene();
 
     //creating button
-    Button addNodeButton(14,sf::Color::White,false,10,200,80,40,"Add Node");
+    bool * addNodeValue; 
+    Button addNodeButton(14,sf::Color::White,false,10,200,80,40,"Add Node",addNodeValue);
     addNodeButton.setFont(arialFont);
-    Button nextButton(14,sf::Color::White,false,10,550,80,40,"Next Step");
+    bool * nextButtonValue;
+    Button nextButton(14,sf::Color::White,false,10,550,80,40,"Next Step", nextButtonValue );
     nextButton.setFont(arialFont);
 
-    //Buttons for selecting 
-    ButtonSwitch dogButtonRot(14,sf::Color::White,false,300,120,80,40,"Static","Not static");
-    dogButtonRot.setFont(arialFont);
-    ButtonSwitch dogButtonX(14,sf::Color::White,false,400,120,80,40,"Static","Not static");
+    //Buttons for selecting
+    bool * dogXValue;
+    bool * dogYValue; 
+    ButtonSwitch dogButtonX(14,sf::Color::White,false,400,120,80,40,"Static","Not static",dogXValue);
     dogButtonX.setFont(arialFont);
-    ButtonSwitch dogButtonY(14,sf::Color::White,false,500,120,80,40,"Static","Not static");
+    ButtonSwitch dogButtonY(14,sf::Color::White,false,500,120,80,40,"Static","Not static",dogYValue);
     dogButtonY.setFont(arialFont);
 
     // Coordinate of graphe node selection
-    InputBox InputX(sf::Color::White,10,130, 80, 30, arialFont);
-    InputBox InputY(sf::Color::White,140,130, 80, 30, arialFont);
+    float * XlocValue;
+    float * YlocValue;
+    InputBox InputX(sf::Color::White,10,130, 80, 30, arialFont,XlocValue);
+    InputBox InputY(sf::Color::White,140,130, 80, 30, arialFont,YlocValue);
     vector<int> nodeCoord;
     nodeCoord.resize(2);
+
+    scene1.addWidget(&addNodeButton);
+    scene1.addWidget(&nextButton);
+    scene1.addWidget(&dogButtonX);
+    scene1.addWidget(&dogButtonY);
+    scene1.addWidget(&InputX);
+    scene1.addWidget(&InputY);
 
 
 
@@ -75,6 +86,10 @@ int main()
     sf::Text dogTxt("Rotation dog, X dog and Y dog",arialFont,20);
     dogTxt.setPosition(sf::Vector2f(300,80));
     dogTxt.setColor(sf::Color(255,255,255));
+
+    
+
+    //textlist for scene 1
     
     vector<sf::Text*> textList;
     textList.push_back( &nodes );
@@ -83,7 +98,9 @@ int main()
     textList.push_back( &dogTxt );
 
     string nodesLtext ; 
-    //
+
+    //scene 2
+    //Scene scene2();
 
 
     
@@ -106,28 +123,24 @@ int main()
         mouseClick=sf::Mouse::isButtonPressed(sf::Mouse::Left);
         window.clear(sf::Color(20,20,20));
 
-        bool pressedAddButton = addNodeButton.render(mouseClick,window);
-        //bool pressed2 = testButton2.render(mouseClick,window);
-        //testBar.render(mouseClick,window);
-
-        nodeCoord[0] = InputX.render(mouseClick,window);
-        nodeCoord[1] = InputY.render(mouseClick,window);
-        dogButtonRot.render(mouseClick,window);
-        dogButtonX.render(mouseClick,window);
-        dogButtonY.render(mouseClick,window);
-
+        //rendering the scene
+        scene1.render(window,mouseClick);
         for(int j = 0; j<textList.size();j++){
             window.draw(*textList[j]);
         };
+        
 
-        if(nextButton.render(mouseClick,window)){
+        nodeCoord[0] =  *XlocValue;
+        nodeCoord[1] = *YlocValue;
+
+        if(nextButtonValue){
             mode+=1;
         }
 
         window.display();
         
         
-        if(pressedAddButton){
+        if(addNodeValue){
             std::cout<<" Adding the node\n";
             nbNode+=1;
             nodeList.resize(nbNode);
