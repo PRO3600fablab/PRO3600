@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "./headers/Button.h"
+#include <Button.h>
 
 Button::Button(){};
 

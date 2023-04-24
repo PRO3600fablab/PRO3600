@@ -3,7 +3,10 @@
 #include "ScrollBar.cpp"
 #include "VectorMaths.cpp"
 #include "./headers/Scene.h"
+#include "headers/ButtonSwitch.h"
+#include <ButtonSwitch.h>
 using namespace std;
+
 int main()
 {
     

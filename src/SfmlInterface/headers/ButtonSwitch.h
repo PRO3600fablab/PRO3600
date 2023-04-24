@@ -1,14 +1,25 @@
+
+#pragma once 
+
 #include <SFML/Graphics.hpp>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+
+
 #include <iostream>
 #ifndef __Widget_h_
 #define __Widget_h_
 #include "Widget.h"
 #endif 
+
 class ButtonSwitch : public Widget{
     public:
     //initialisation
     ButtonSwitch();
-    ButtonSwitch(int tsize,sf::Color color,bool sel,int loc0,int loc1, int siz0, int siz1, std::string textTrue,std::string textFalse, bool * render){};
+    ButtonSwitch(int tsize,sf::Color color,bool sel,int loc0,int loc1, int siz0, int siz1, std::string textTrue,std::string textFalse, bool * render);
+	//ButtonSwitch(int tsize,sf::Color color,bool sel,int loc0,int loc1, int siz0, int siz1, std::string textTrue,std::string textFalse, bool * render){};
 
     void initRectangle(int loc0, int loc1);
 

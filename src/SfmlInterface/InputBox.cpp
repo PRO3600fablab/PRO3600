@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #define proportion 0.6
-
+#include <InputBox.h>
     
 InputBox::InputBox(){}
 InputBox::InputBox(sf::Color colorarg,int loc0,int loc1, int siz0, int siz1,sf::Font &font, float * render){

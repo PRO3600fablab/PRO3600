@@ -1,8 +1,20 @@
+#pragma once 
+
 #include <SFML/Graphics.hpp>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+
+
 #include <iostream>
 #include "ButtonSwitch.h"
 #include "Button.h"
 #include "InputBox.h"
+
+using namespace std ;
+
+
 
 class Scene{
     public:
@@ -14,5 +26,5 @@ class Scene{
 
 
     private:
-    vector<Widget*> collection;
+	vector <Widget*> collection;
 };
