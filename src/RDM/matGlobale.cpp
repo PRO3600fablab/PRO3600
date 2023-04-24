@@ -9,9 +9,9 @@ using namespace std;
 
 //fonction assemblage de la matrice de rigidité globale version V3
 
-void matriceGlobale(vector<vector<vector<vector<double>>>> &matElements,
+void matriceGlobale(vector<vector<vector<vector<float>>>> &matElements,
                     vector<vector<bool>> &matLiaison,
-                    vector<vector<vector<vector<double>>>> &K){
+                    vector<vector<vector<vector<float>>>> &K){
     int n = K.size();
     for (int i = 0; i < n; i++) {
         for (int j = i; j < n; j++) {
@@ -42,7 +42,7 @@ void matriceGlobale(vector<vector<vector<vector<double>>>> &matElements,
 
 
 //afficher la matrice K
-void afficher(vector<vector<vector<vector<double>>>> &K) {
+void afficher(vector<vector<vector<vector<float>>>> &K) {
     for(int i=0;i<K.size();i++) {
         for(int a=0; a<2; a++){
             for(int j=0;j<K.size();j++) {
@@ -61,7 +61,7 @@ int main (){
 const int m=4;
 
 //déclaration K :
-vector<vector<vector<vector<double>>>> K(m, vector<vector<vector<double>>>(m, vector<vector<double>>(2, vector<double>(2, 0.0))));
+vector<vector<vector<vector<float>>>> K(m, vector<vector<vector<float>>>(m, vector<vector<float>>(2, vector<float>(2, 0.0))));
 
 
 //déclaration de la matrice de liaison
@@ -82,7 +82,7 @@ matLiaison[2][3] = true;
 matLiaison[3][3] = false;
 
 //déclaration de la matrice des éléments
-vector<vector<vector<vector<double>>>> matElements(m, vector<vector<vector<double>>>(m, vector<vector<double>>(4, vector<double>(4))));
+vector<vector<vector<vector<float>>>> matElements(m, vector<vector<vector<float>>>(m, vector<vector<float>>(4, vector<float>(4))));
 
 //élément 11
 matElements[0][0][0][0] = 0;

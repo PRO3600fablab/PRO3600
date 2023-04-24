@@ -8,7 +8,7 @@
 using namespace std;
 
 //afficher la matrice de matrices élémentaires
-void afficher(vector<vector<vector<vector<double>>>> K) {
+void afficher(vector<vector<vector<vector<float>>>> K) {
     for(int m=0; m<3; m++){
         for(int n=0; n<3; n++){
             for(int i=0;i<4;i++) {
@@ -24,24 +24,24 @@ void afficher(vector<vector<vector<vector<double>>>> K) {
 }
 
 //fonction de construction de la matrice regroupant toutes les matrices élémentaires
- vector<vector<vector<vector<double>>>> matElementaire(vector<vector<vector<double>>>&matLinkSpec, vector<vector<bool>> &matLiaison){
+ vector<vector<vector<vector<float>>>> matElementaire(vector<vector<vector<float>>>&matLinkSpec, vector<vector<bool>> &matLiaison){
 //type poutre : 1 correspond à une section cylindrique 0 à une section carré
 
- vector<vector<vector<vector<double>>>> Ke(matLinkSpec.size(), vector<vector<vector<double>>>(matLinkSpec.size(), vector<vector<double>>(4, vector<double>(4, 0.0))));
+ vector<vector<vector<vector<float>>>> Ke(matLinkSpec.size(), vector<vector<vector<float>>>(matLinkSpec.size(), vector<vector<float>>(4, vector<float>(4, 0.0))));
 
 for(int i=0; i<matLinkSpec.size(); i++){
     for(int j=0;j<matLinkSpec.size(); j++){
         if(matLiaison[i][j]){
-            double typePoutre = matLinkSpec[i][j][0];
-            double exter = matLinkSpec[i][j][1];
-            double inter = matLinkSpec[i][j][2];
-            double L = matLinkSpec[i][j][3];
-            double theta = matLinkSpec[i][j][4];
-            double E = matLinkSpec[i][j][5];
-            double A(0);
+            float typePoutre = matLinkSpec[i][j][0];
+            float exter = matLinkSpec[i][j][1];
+            float inter = matLinkSpec[i][j][2];
+            float L = matLinkSpec[i][j][3];
+            float theta = matLinkSpec[i][j][4];
+            float E = matLinkSpec[i][j][5];
+            float A(0);
 
 
-               if(typePoutre !=0 && typePoutre!=1){ // cette partie de la condition sert à prévenir les erreurs d'arrondies (la valeur typePoutre est stockée en double au lieu de int)
+               if(typePoutre !=0 && typePoutre!=1){ // cette partie de la condition sert à prévenir les erreurs d'arrondies (la valeur typePoutre est stockée en float au lieu de int)
                     typePoutre-=0.25;
                     if (typePoutre<0.5){
                         typePoutre=0;
@@ -97,7 +97,7 @@ int main (){
 vector<vector<bool>> matLiaison(3, vector<bool>(3,true));
 
 
-vector<vector<vector<double>>>matLinkSpec(3, vector<vector<double>>(3,vector<double>(6, 0.0)));
+vector<vector<vector<float>>>matLinkSpec(3, vector<vector<float>>(3,vector<float>(6, 0.0)));
 
 matLinkSpec[0][0][0] = 0;
 matLinkSpec[0][0][1] = 0.2;
