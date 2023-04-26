@@ -6,10 +6,10 @@
 #include <array>
 #include <cmath>
 #include <valarray>
+#include <Eigen/Dense>
 using namespace std;
 
-
-//fonction permettant de créer le sous vecteur de déplacements 
+//fonction permettant de créer le sous vecteur de déplacements
 vector<float> sousVecteurDeplac(vector<bool>V){
     int count(0);
         for (int i(0); i < V.size(); i++){
@@ -38,37 +38,86 @@ vector<float> sousVecteurForce(vector<bool>V, vector<float>F){
 
 
 
-//fonction permettant de créer la sous matrice 
-vector<vector<float>> sousMatrice(vector<bool>V,vector<vector<vector<vector<float>>>> K)
-{
-   int count(0);
-      vector<vector<float>> K2(0);
-        for (int ligne(0); ligne<V.size(); ligne++){
-            if (V[ligne]!=true){
-                    for (int a(0); a<2; a++){
-                        for (int colone(0); colone<V.size(); colone++){
-                            for (int b(0); b<2; b++){
-                                
-                                for(int push(0); push<count; push++){
-                                    K2[push].push_back(0.0);
-                                }
-                                count+=1;
-                                vector<float> nouvelle_ligne(count, 0.0);
-                                K2.push_back(nouvelle_ligne);
-                                K2[count][2*colone-1+a]=K[ligne][colone][a][b];//il faut réaliser l'opération 2*c-1+a car initialement la matrice est une matrice de matrice 2*2 que l'on remet dans une 2*2 
-                            }
-                        }
+//fonction permettant de retranscrire une matrice de matrice 2*2 plus simplement en matrice 2*2
+vector<vector<float>> MatConvertion(vector<vector<vector<vector<float>>>> inMat){
+    int taille(inMat.size());
+    vector<vector<float>> outMat(taille*2,vector<float>(taille*2,0.0));
+     for (int i = 0; i < taille ; i++) {
+        for (int k = 0; k < 2; k++) {
+                for (int j = 0; j < taille; j++) {
+                    for (int l = 0; l < 2; l++) {
+                        outMat[2*i+k][2*j+l] = inMat[i][j][k][l];
                     }
-            
+                }
             }
         }
-        return K2 ;
+        return outMat;
 }
 
 
 
+//fonction permettant de donner la transposée d'une matrice 
+vector<vector<float>> transpose(vector<vector<float>>inMat){
+    int ligne(inMat.size());
+    int col(inMat[0].size());
+    vector<vector<float>> outMat(col,vector<float>(ligne,0));
+
+     for(int i = 0; i < ligne; i++) {
+        for(int j = 0; j < col; j++) {
+            outMat[j][i] = inMat[i][j];
+        }
+    }
+    return outMat;
+}
+
+
+
+
+//fonction permettant de créer la sous matrice
+vector<vector<float>> sousMatrice(vector<bool> U, vector<vector<float>> K) {
+    
+int ligneK2(0);
+for (int i=0; i<K.size(); i++){ //détermine le nombre de ligne qu'aura la matrice K2
+    if (U[i]!=true){
+        ligneK2+=1;
+    }
+}
+
+int count(-1);//ce compteur va nous permettre de recopier les éléments que l'on souhaite conserver à la bonne ligne dans matrice K2
+vector<vector<float>> K2(ligneK2,vector<float>(K.size(),0.0));
+    for (int i = 0; i < U.size() ; i++) {
+    if (U[i]!=true){
+        count+=1;
+        for (int j=0; j<K[0].size(); j++){
+            K2[count][j]=K[i][j];
+            
+        }
+
+        }
+    }
+
+    int count2(-1);
+    vector<vector<float>> K3 = transpose(K2);
+    vector<vector<float>> K4 (ligneK2,vector<float>(ligneK2,7.0));
+    
+    for (int i = 0; i < U.size() ; i++) {
+    if (U[i]!=true){
+        count2+=1;
+        for (int j=0; j<K3[0].size(); j++){
+            K4[count2][j]=K3[i][j];   
+        }
+        }  
+    }
+
+return K4;
+                
+}
+
+
+
+
 //fonction pour afficher les vecteurs :
-void displayV(vector<float>V){
+void displayV(vector<float> V){
     int taille(V.size());
     for (int i(0); i<taille; i++){
         cout << V[i] << endl;
@@ -79,10 +128,9 @@ void displayV(vector<float>V){
 
 //fonction pour afficher la matrice
 void displayM(vector<vector<float>> M){
-    int taille(M.size());
-    for (int i(0); i<taille; i++){
-        for (int j(0); j<taille; j++){
-            cout << M[i][j];    
+    for (int i(0); i<M.size(); i++){
+        for (int j(0); j<M[i].size(); j++){
+            cout << M[i][j] << "  ";    
         }
         cout << endl;
     }
@@ -90,81 +138,88 @@ void displayM(vector<vector<float>> M){
 
 
 
-//fonction permettant d'inverser une matrice
-vector<vector<float>> InvMat(int NbElement, vector<vector<float>> &Mat)
-{
-    vector<vector<float>> temp(NbElement, vector<float>(NbElement, 0.0));
+//fonction permettant le calcul Matriciel 
+vector<float> calculMat(vector<vector<float>> M, vector<float> U) {
+    int ligne = M.size(); 
+    int col = M[0].size();
 
-    for(int i=0; i<NbElement; i++)
-    {
-        for(int j=0; j<NbElement; j++)
-        {
-            temp[i][i] = 1.0/Mat[i][i];
-            if(j!=i)
-            {
-                temp[i][j] = -Mat[i][j]/Mat[i][i];
-            }
-            for(int k=0; k<NbElement; k++)
-            {
-                if(k!=i)
-                {
-                    temp[k][i] = Mat[k][i]/Mat[i][i];
-                }
-                if(j!=i && k!=i)
-                {
-                    temp[k][j] = Mat[k][j] - Mat[i][j]*Mat[k][i]/Mat[i][i];
-                }
-            }
-        }
-        for(int i=0; i<NbElement; i++)
-        {
-            for(int j=0; j<NbElement; j++)
-            {
-                Mat[i][j] = temp[i][j];
-            }
+    if (col != U.size()) {
+        // vérifier que les dimensions de la matrice et du vecteur sont compatibles
+        cout << "La dimension de la matrice M doit correspondre à la dimension du vecteur U.";
+    }
+
+    vector<float> result(ligne, 0.0);
+
+
+    for (int i = 0; i < ligne; i++) {
+        for (int j = 0; j < col; j++) {
+            result[i] += M[i][j] * U[j];
         }
     }
-    return temp;
+
+    return result;
 }
 
 
-/*
+
+
 //fonction permettant de calculer les deplacements 
 vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<vector<float>>>>K )
 {
     
-    //créer le sous vecteurs déplacements simplifié U2 
+    //créer le sous vecteur Déplacement 
     vector<float>U2 = sousVecteurDeplac(U);
+    //créer le sous vecteur Force
     vector<float>F2 = sousVecteurForce(U,F);
 
-    //créer la sous matrice
-    vector<vector<float>>K2 = sousMatrice(U,K);
 
+    // retranscrire la matrice de matrice 2*2 (K) simplement en matrice 2*2 (Kintermediaire)
+    vector<vector<float>>Kintermediaire = MatConvertion(K);
+    //créer la sous matrice K2
+    vector<vector<float>>K2 = sousMatrice(U,Kintermediaire);
 
-    int degreHyperStat;
-    //calculer le deg Hyper Stat 
+    
 
-    if (degreHyperStat < 0){
-        cout << "Le système n'est pas résolvable (hypo-statique)" << endl;
-        cout << "Veuillez contraindre d'avantage votre sytème"<< endl;
+    int ligne = K2.size();
+    int col = K2[0].size();
+    
+    Eigen::MatrixXf matEigen(ligne, col);
+    
+    for (int i = 0; i < ligne; i++) {
+        for (int j = 0; j < col; j++) {
+            matEigen(i, j) = K2[i][j];
+        }
+    }
+    
+    //inverser la matrice
+    Eigen::MatrixXf matInverse = matEigen.inverse();
+
+    // repasser en vector<vector<float>> pour pouvoir faire le calcul matricielle 
+    for (int i = 0; i < ligne; i++) {
+        for (int j = 0; j < col; j++) {
+            K2[i][j] = matInverse(i,j);
+        }
     }
 
-
-    //inverser la matrices K2
-    int taille(K2.size());
-    vector<vector<float>> K3 = InvMat(taille,K2);
+    cout << "la matrice inverse est égale à : " << endl;
+    displayM(K2);
     
 
     //calcule de U2 = K2^-1 F2
+        U2 = calculMat(K2,F2);
+    //vector<float> U2 = calculMat(InvMat(taille,K2),F2);
 
     //reconstitution du vecteur déplacement U
 
+    return U2;
 }
-*/
+
+
 
 
 int main (){
     cout << "test1" << endl;
+
     vector<bool>U(6);
     U[0]=false;
     U[1]=true;
@@ -172,7 +227,7 @@ int main (){
     U[3]=true;
     U[4]=false;
     U[5]=true;
-    cout << "test2"<< endl;
+  
     vector<float>F(6,2);
     F[0]=9;
     F[1]=3;
@@ -181,44 +236,28 @@ int main (){
     F[4]=9;
     F[5]=3;
 
-  /*
-    vector<vector<vector<vector<float>>>>K;
-    cout << "test3"<< endl;
-    K[0][0][0][0]=1;
-    K[0][0][0][1]=1;
-    K[0][0][1][0]=1;
-    K[0][0][1][1]=1;
-    cout << "test zeub" << endl;
-    K[0][1][0][0]=1;
-    K[0][1][0][1]=1;
-    K[0][1][1][0]=1;
-    K[0][1][1][1]=1;
-
-    K[1][0][0][0]=1;
-    K[1][0][0][1]=1;
-    K[1][0][1][0]=1;
-    K[1][0][1][1]=1;
-
-    K[1][1][0][0]=1;
-    K[1][1][0][1]=1;
-    K[1][1][1][0]=1;
-    K[1][1][1][1]=1;
-    cout << "test4" << endl;
   
-    vector<vector<float>> M(2, vector<float>(2,0.0));
-    M[0][0]=0.0;
-    M[0][1]=1.2;
-    M[1][0]=2.3;
-    M[1][1]=2.2;
-    displayM(M);
-  */
+   vector<vector<vector<vector<float>>>> K(3, vector<vector<vector<float>>>(3, vector<vector<float>>(2, vector<float>(2, 1.0))));
+   K[0][0][1][1]=-1;
+   K[1][2][0][0]=-1;
+   K[2][1][0][0]=-1;
 
-    cout << " sous vect Déplacement : " << endl;
+    cout << endl << " sous vect Déplacement : " << endl;
     displayV(sousVecteurDeplac(U));
-    cout << " sous vect Force : " << endl;
+    cout << endl<< " sous vect Force : " << endl;
     displayV(sousVecteurForce(U,F));
-   // displayM(sousMatrice(U,K));
 
-   cout << "test6" << endl;
+    cout << endl <<"sous matrice : " << endl;
+    vector<vector<float>>K2 = MatConvertion(K);
+    vector<vector<float>>K3 = sousMatrice(U,K2);
+    displayM(K3);
+    cout << endl << "inverse de la matrice : " << endl; 
+
+    cout << endl << "déplacements U2 : " << endl;
+    vector<float> U2 = deplacements(U,F,K);
+    displayV(U2);
+
+
+   cout << "fin programme" << endl;
 return 0;
 }
