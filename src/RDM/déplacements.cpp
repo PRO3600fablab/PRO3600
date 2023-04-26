@@ -210,8 +210,16 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
     //vector<float> U2 = calculMat(InvMat(taille,K2),F2);
 
     //reconstitution du vecteur déplacement U
+    vector<float> U3(U.size(),0.0);
+    for (int i=0; i<U.size(); i++){
+        int count(-1);
+        if(U[i]!=true){
+            count+=1;
+            U3[i]=U2[count];
+        }
+    }
 
-    return U2;
+    return U3;
 }
 
 
