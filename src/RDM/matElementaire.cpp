@@ -24,7 +24,7 @@ void afficher(vector<vector<vector<vector<float>>>> K) {
 }
 
 //fonction de construction de la matrice regroupant toutes les matrices élémentaires
- vector<vector<vector<vector<float>>>> matElementaire(vector<vector<vector<float>>>&matLinkSpec, vector<vector<bool>> &matLiaison){
+ vector<vector<vector<vector<float>>>> matElementaire(vector<vector<vector<float>>>matLinkSpec, vector<vector<bool>> matLiaison){
 //type poutre : 1 correspond à une section cylindrique 0 à une section carré
 
  vector<vector<vector<vector<float>>>> Ke(matLinkSpec.size(), vector<vector<vector<float>>>(matLinkSpec.size(), vector<vector<float>>(4, vector<float>(4, 0.0))));
@@ -90,7 +90,7 @@ return Ke;
 
 
 
-
+/*
 
 int main (){
 
@@ -166,3 +166,4 @@ afficher(matElementaire(matLinkSpec, matLiaison));
 
 return 0;
 }
+*/

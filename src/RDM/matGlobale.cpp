@@ -9,9 +9,9 @@ using namespace std;
 
 //fonction assemblage de la matrice de rigidité globale version V3
 
-void matriceGlobale(vector<vector<vector<vector<float>>>> &matElements,
-                    vector<vector<bool>> &matLiaison,
-                    vector<vector<vector<vector<float>>>> &K){
+void matriceGlobale(vector<vector<vector<vector<float>>>> matElements,
+                    vector<vector<bool>> matLiaison,
+                    vector<vector<vector<vector<float>>>> K){
     int n = K.size();
     for (int i = 0; i < n; i++) {
         for (int j = i; j < n; j++) {
@@ -40,9 +40,9 @@ void matriceGlobale(vector<vector<vector<vector<float>>>> &matElements,
     }
 }
 
-
+/*
 //afficher la matrice K
-void afficher(vector<vector<vector<vector<float>>>> &K) {
+void afficher(vector<vector<vector<vector<float>>>> K) {
     for(int i=0;i<K.size();i++) {
         for(int a=0; a<2; a++){
             for(int j=0;j<K.size();j++) {
@@ -52,10 +52,10 @@ void afficher(vector<vector<vector<vector<float>>>> &K) {
         }
         }
 }
+*/
 
 
-
-
+/*
 int main (){
 
 const int m=4;
@@ -275,3 +275,4 @@ afficher(K);
 return 0;
 }
 
+*/

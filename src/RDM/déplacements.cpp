@@ -223,7 +223,7 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
 }
 
 
-
+/*
 
 int main (){
     cout << "test1" << endl;
@@ -269,3 +269,4 @@ int main (){
    cout << "fin programme" << endl;
 return 0;
 }
+*/
