@@ -1,14 +1,14 @@
 #pragma once 
 
 #include <SFML/Graphics.hpp>
-#include <GL/glew.h>
-#include <GL/gl.h>
 #include <SFML/Window.hpp>
-#include <SFML/OpenGL.hpp>
 
 
 #include <iostream>
+#ifndef __Widget_h_
+#define __Widget_h_
 #include "Widget.h"
+#endif 
 //size convention : 
 /*
 the cursor is 10% the size of the bar
