@@ -113,7 +113,7 @@ void InputBox::drawTo(sf::RenderWindow &window){
     //window.draw(unityText);
 };
 
-void InputBox::render(bool clicked,sf::RenderWindow &window){
+void InputBox::render(sf::RenderWindow &window, bool clicked){
     //this function render the button and return the current value of the button
     int detected = detect(window);
     chooseColor(detected);

@@ -1,13 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <GL/glew.h>
-#include <GL/gl.h>
+
 #include <SFML/Window.hpp>
-#include <SFML/OpenGL.hpp>
 
 
 #include <iostream>
+
 #ifndef __Widget_h_
 #define __Widget_h_
 #include "Widget.h"
@@ -29,7 +28,7 @@ class Button: public Widget {
     void chooseColor(bool b);
     void drawTo(sf::RenderWindow &window);
 
-    void render(sf::RenderWindow &window, bool clicked);
+    void render(sf::RenderWindow &window, bool clicked) override;
     bool detect(sf::RenderWindow &window);
     
     private:

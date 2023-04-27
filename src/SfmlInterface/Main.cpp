@@ -1,23 +1,24 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "ScrollBar.cpp"
-#include "VectorMaths.cpp"
 #include "./headers/Scene.h"
-#include "headers/ButtonSwitch.h"
-#include <ButtonSwitch.h>
+#include "./headers/TextScene.h"
+#include "./headers/Button.h"
+#include "./headers/ButtonSwitch.h"
+#include "./headers/InputBox.h"
+#include "VectorMaths.cpp"
 using namespace std;
 
 int main()
 {
     
-    // declaration des variables pour le modèle
+    // declaration des variables pour le modele
     // nombre de point
     int nbNode = 0;
     //liste des points
     vector<vector<float>> nodeList;
     // matrice d adjacence 
     vector<vector<bool>> adjaMat;
-    // matrice des caractérisqtiques des adjacences
+    // matrice des caracterisqtiques des adjacences
     // each link is caracterised by [i,a,b,L,teta,E]
     // i=0 for rectangle,1 for circle; a and b are dimensions; L is length beetwen nodes; teta is the angle between the two nodes;
     // and E is the young module
@@ -36,34 +37,46 @@ int main()
     {
         std::cout<<"impossible de charger la font";
     };
+    
+    //collection of scene and textual scene
+    vector<Scene> sceneList; //is the list of the different scenes that can be render
+    vector<TextScene> textSceneList;
+    //a scene is a collection of widgets or collection of texts
 
     //widgets for scene one :
     Scene scene1 = Scene();
 
     //creating button
-    bool * addNodeValue; 
-    Button addNodeButton(14,sf::Color::White,false,10,200,80,40,"Add Node",addNodeValue);
+    bool addNodeValue= false;
+    bool * addNodeValuePtr= &addNodeValue; 
+    Button addNodeButton(14,sf::Color::White,false,10,200,80,40,"Add Node",addNodeValuePtr);
     addNodeButton.setFont(arialFont);
-    bool * nextButtonValue;
-    Button nextButton(14,sf::Color::White,false,10,550,80,40,"Next Step", nextButtonValue );
+    
+    bool nextButtonValue = false;
+    bool * nextButtonValuePtr = & nextButtonValue;
+    Button nextButton(14,sf::Color::White,false,10,550,80,40,"Next Step", nextButtonValuePtr );
     nextButton.setFont(arialFont);
 
     //Buttons for selecting
-    bool * dogXValue;
-    bool * dogYValue; 
-    ButtonSwitch dogButtonX(14,sf::Color::White,false,400,120,80,40,"Static","Not static",dogXValue);
+    bool dogXValue = false;
+    bool dogYValue = false;
+    bool * dogXValuePtr = & dogXValue;
+    bool * dogYValuePtr = & dogYValue; 
+    ButtonSwitch dogButtonX(14,sf::Color::White,false,400,120,80,40,"Static","Not static",dogXValuePtr);
     dogButtonX.setFont(arialFont);
-    ButtonSwitch dogButtonY(14,sf::Color::White,false,500,120,80,40,"Static","Not static",dogYValue);
+    ButtonSwitch dogButtonY(14,sf::Color::White,false,500,120,80,40,"Static","Not static",dogYValuePtr);
     dogButtonY.setFont(arialFont);
 
     // Coordinate of graphe node selection
-    float * XlocValue;
-    float * YlocValue;
-    InputBox InputX(sf::Color::White,10,130, 80, 30, arialFont,XlocValue);
-    InputBox InputY(sf::Color::White,140,130, 80, 30, arialFont,YlocValue);
-    vector<int> nodeCoord;
+    float XlocValue = 0;
+    float YlocValue = 0;
+    float * XlocValuePtr = &XlocValue;
+    float * YlocValuePtr = &YlocValue;
+    InputBox InputX(sf::Color::White,10,130, 80, 30, arialFont,XlocValuePtr);
+    InputBox InputY(sf::Color::White,140,130, 80, 30, arialFont,YlocValuePtr);
+    vector<float> nodeCoord;
     nodeCoord.resize(2);
-
+    
     scene1.addWidget(&addNodeButton);
     scene1.addWidget(&nextButton);
     scene1.addWidget(&dogButtonX);
@@ -94,23 +107,90 @@ int main()
 
     //textlist for scene 1
     
-    vector<sf::Text*> textList;
-    textList.push_back( &nodes );
-    textList.push_back( &titleTxt );
-    textList.push_back( &xyCoordTxt );
-    textList.push_back( &dogTxt );
-
+    TextScene textScene1= TextScene();
+    textScene1.addText(&nodes );
+    textScene1.addText( &titleTxt );
+    textScene1.addText( &xyCoordTxt );
+    textScene1.addText( &dogTxt );
+    
     string nodesLtext ; 
 
-    //scene 2
-    //Scene scene2();
 
+    sceneList.push_back(scene1);
+    textSceneList.push_back(textScene1);
+
+    //scene 2
+    Scene scene2 = Scene();
+
+    bool addLinkValue=false;
+    bool * addLinkValuePtr = & addLinkValue;
+    Button addLinkButton(14,sf::Color::White,false,10,420,80,40,"Add Link", addLinkValuePtr );
+    addLinkButton.setFont(arialFont);
+
+    bool removeLinkValue=false;
+    bool * removeLinkValuePtr = &removeLinkValue;
+    Button removeLinkButton(14,sf::Color::White,false,110,420,80,40,"Remove Link", removeLinkValuePtr );
+    removeLinkButton.setFont(arialFont);
+
+    float firstNodeValue=0;
+    float * firstNodeValuePtr=&firstNodeValue;
+    float secondNodeValue=0;
+    float * secondNodeValuePtr=&secondNodeValue;
+    InputBox firstNode (sf::Color::White,10,130, 80, 30, arialFont,firstNodeValuePtr);
+    InputBox secondNode(sf::Color::White,140,130, 80, 30, arialFont,secondNodeValuePtr);
+
+    bool renderCalculsValueBool = false;
+    bool * renderCalculsValueBoolPtr=&renderCalculsValueBool;
+    Button renderCalculsValue(14,sf::Color::White,false,10,550,80,40,"Next Step", renderCalculsValueBoolPtr );
+    renderCalculsValue.setFont(arialFont);
+
+    float firstLinkParametreValue=0;
+    float secondLinkParametreValue=0;
+    float * firstLinkParametreValuePtr=&firstLinkParametreValue;
+    float * secondLinkParametreValuePtr=&secondLinkParametreValue;
+    InputBox firstParameterInput(sf::Color::White,10,130, 80, 30, arialFont,firstLinkParametreValuePtr);
+    InputBox secondParameterInput(sf::Color::White,140,130, 80, 30, arialFont,secondLinkParametreValuePtr);
+
+    scene2.addWidget(&addLinkButton);
+    scene2.addWidget(&removeLinkButton);
+    scene2.addWidget(&firstNode);
+    scene2.addWidget(&secondNode);
+    scene2.addWidget(&renderCalculsValue);
+    scene2.addWidget(&firstParameterInput);
+    scene2.addWidget(&secondParameterInput);
+
+    // textlist for scene 2
+
+    sf::Text node1et2("Node 1 and 2 index:",arialFont,20);//node array
+    node1et2.setPosition(sf::Vector2f(20,60));
+    node1et2.setColor(sf::Color(255,255,255));
+
+    sf::Text addLinkText("Add a new link",arialFont,40);//title of the first scene
+    addLinkText.setPosition(sf::Vector2f(10,10));
+    addLinkText.setColor(sf::Color(255,255,255));
+
+    sf::Text aAndBValue("a & b :",arialFont,20);
+    aAndBValue.setPosition(sf::Vector2f(20,180));
+    aAndBValue.setColor(sf::Color(255,255,255));
+
+    sf::Text profilSelection("Choose the profile section :",arialFont,20);
+    profilSelection.setPosition(sf::Vector2f(20,360));
+    profilSelection.setColor(sf::Color(255,255,255));
+
+    TextScene textScene2=TextScene();
+    textScene2.addText( &node1et2 );
+    textScene2.addText( &addLinkText );//title
+    textScene2.addText( &aAndBValue );
+    textScene2.addText( &profilSelection );
+
+    sceneList.push_back(scene2);
+    textSceneList.push_back(textScene2);
 
     
 
     //input
     bool mouseClick = false;
-
+    
     
     while (window.isOpen())
     {
@@ -126,20 +206,18 @@ int main()
         mouseClick=sf::Mouse::isButtonPressed(sf::Mouse::Left);
         window.clear(sf::Color(20,20,20));
 
-        //rendering the scene
-        scene1.render(window,mouseClick);
-        for(int j = 0; j<textList.size();j++){
-            window.draw(*textList[j]);
-        };
+        //rendering the proper scene
+        sceneList[mode].render(window,mouseClick);
+        textSceneList[mode].render(window);
         
-
-        nodeCoord[0] =  *XlocValue;
-        nodeCoord[1] = *YlocValue;
+        
+        nodeCoord[0] = XlocValue;
+        nodeCoord[1] = YlocValue;
 
         if(nextButtonValue){
-            mode+=1;
+            mode=1;
         }
-
+        
         window.display();
         
         
@@ -155,6 +233,8 @@ int main()
         
         nodesLtext = " Nodes \n"+displayVect(nodeList);
         nodes.setString(nodesLtext);
+        
+        
     }
     std::cout<<"Hello world";
     return 0;

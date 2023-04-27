@@ -64,7 +64,7 @@ void ButtonSwitch::drawTo(sf::RenderWindow &window){
     window.draw(textbox);
 };
 
-void ButtonSwitch::render(bool clicked,sf::RenderWindow &window){
+void ButtonSwitch::render(sf::RenderWindow &window, bool clicked){
     bool detected = detect(window);
     chooseColor(state);
     bool result = (clicked && detected && not(isSelected));
