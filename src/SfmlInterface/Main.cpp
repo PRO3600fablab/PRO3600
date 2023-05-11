@@ -16,13 +16,15 @@ int main()
     int nbNode = 0;
     //liste des points
     vector<vector<float>> nodeList;
+    vector<vector<bool>> nodeDOF;
+    vector<float> nodeForce; // x and y coordinates
     // matrice d adjacence 
     vector<vector<bool>> adjaMat;
     // matrice des caracterisqtiques des adjacences
     // each link is caracterised by [i,a,b,L,teta,E]
     // i=0 for rectangle,1 for circle; a and b are dimensions; L is length beetwen nodes; teta is the angle between the two nodes;
     // and E is the young module
-    vector<vector<float[6]>> linkSpec;
+    vector<vector<vector<float>>> linkSpec;
     
     
     //mode choice
@@ -49,7 +51,7 @@ int main()
     //creating button
     bool addNodeValue= false;
     bool * addNodeValuePtr= &addNodeValue; 
-    Button addNodeButton(14,sf::Color::White,false,10,200,80,40,"Add Node",addNodeValuePtr);
+    Button addNodeButton(14,sf::Color::White,false,10,240,80,40,"Add Node",addNodeValuePtr);
     addNodeButton.setFont(arialFont);
     
     bool nextButtonValue = false;
@@ -76,6 +78,15 @@ int main()
     InputBox InputY(sf::Color::White,140,130, 80, 30, arialFont,YlocValuePtr);
     vector<float> nodeCoord;
     nodeCoord.resize(2);
+
+    // Force 
+    float xForceValue = 0;
+    float yForceValue = 0;
+    float * xForceValuePtr = &xForceValue;
+    float * yForceValuePtr = &yForceValue;
+    InputBox InputForceX(sf::Color::White,10,200, 80, 30, arialFont,xForceValuePtr);
+    InputBox InputForceY(sf::Color::White,140,200, 80, 30, arialFont,yForceValuePtr);
+
     
     scene1.addWidget(&addNodeButton);
     scene1.addWidget(&nextButton);
@@ -83,7 +94,8 @@ int main()
     scene1.addWidget(&dogButtonY);
     scene1.addWidget(&InputX);
     scene1.addWidget(&InputY);
-
+    scene1.addWidget(&InputForceX);
+    scene1.addWidget(&InputForceY);
 
 
     //text for first page
@@ -273,10 +285,14 @@ int main()
             firstNode.changeInterval(1,nbNode);
             secondNode.changeInterval(1,nbNode);
             adjaMat.resize(nbNode);
+            linkSpec.resize(nbNode);
             for(int j = 0; j<nbNode; j++){
                 adjaMat[j].resize(nbNode);
-            }
-            //linkSpec.resize(nbNode);
+                linkSpec[j].resize(nbNode);
+                for(int k = 0; k<nbNode;k++){
+                    linkSpec[j][k].resize(6);
+                };
+            };
         }
         
         window.display();
@@ -285,16 +301,33 @@ int main()
         if(addNodeValue){
             std::cout<<" Adding the node\n";
             nbNode+=1;
+            // adding all the info of the node to the matrix
+            //adjacence matrix
             nodeList.resize(nbNode);
             nodeList[nbNode-1].resize(2);
             nodeList[nbNode-1][0]=nodeCoord[0];
             nodeList[nbNode-1][1]=nodeCoord[1];
+
+            //degre of freedom vector
+            nodeDOF.resize(nbNode);
+            nodeDOF[nbNode-1].resize(2);
+            nodeDOF[nbNode-1][0]=dogXValue;
+            nodeDOF[nbNode-1][1]=dogYValue;
+
+            //adding the force
+            nodeForce.resize(2*nbNode);
+            nodeForce[2*nbNode-2]=xForceValue;
+            nodeForce[2*nbNode-1]=yForceValue;
+
         };
 
         if(addLinkValue){
             adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = true;
-
             adjaMat[(int)secondNodeValue - 1][(int)firstNodeValue - 1] = true;
+            for(int j=0;j<6;j++){
+                linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][j]=1;
+                linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][j]=1;
+            }
         }
         if(removeLinkValue){
             adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = false;
