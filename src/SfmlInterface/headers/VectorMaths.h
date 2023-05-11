@@ -11,7 +11,7 @@ using namespace std;
 */
 
 string displayVect(vector<vector<float>> v){};
-    
+string displayVect(vector<vector<bool>> v){};
 class VectorMaths{
     public:
     VectorMaths();

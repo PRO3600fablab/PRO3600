@@ -25,7 +25,11 @@ class InputBox : public Widget{
     //getter & setter
     void setFont(sf::Font &font);
 
+    // changing the interval of the value
+    void changeInterval(int min, int max);
+
     //render function
+
     void chooseColor(int i);
     
     void drawTo(sf::RenderWindow &window);
@@ -47,7 +51,7 @@ class InputBox : public Widget{
     bool isReading=false;// is true when the text area is clicked so the button read the input to change the value
     //value contained in the widget
     float value=0;
-    float borneValue[2];
+    int borneValue[2];
     //shapes and color
     sf::Color color;
     sf::RectangleShape contourText;//text input

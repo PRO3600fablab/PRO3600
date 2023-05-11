@@ -9,12 +9,15 @@ string displayVect(vector<vector<float>> v){
     string answer = "";
         for(int k = 0; k<v.size();k++){
             cout<<"[";
-            answer +="[";
+            answer +="node "+std::to_string(k)+" : [ ";
             for(int i = 0;i<(v[k]).size();i++){
                 cout<<v[k][i];
                 cout<<" ";
                 answer += std::to_string(v[k][i]);
                 answer +=" ";
+                if(i!=(v[k]).size()-1){
+                    answer+="; ";
+                }
             }
             cout<<"]";
             answer +="]";
@@ -27,6 +30,31 @@ string displayVect(vector<vector<float>> v){
         return answer;
     };
     
+string displayVect(vector<vector<bool>> v){
+    string answer = "";
+        for(int k = 0; k<v.size();k++){
+            cout<<"[";
+            answer +="node "+std::to_string(k)+" : [ ";
+            for(int i = 0;i<(v[k]).size();i++){
+                cout<<v[k][i];
+                cout<<" ";
+                answer += std::to_string(v[k][i]);
+                answer +=" ";
+                if(i!=(v[k]).size()-1){
+                    answer+="; ";
+                }
+            }
+            cout<<"]";
+            answer +="]";
+            cout<<"\n";
+            answer +="\n";
+
+        }
+        cout<<"\n";
+        answer +="\n";
+        return answer;
+    };
+
 class VectorMaths{
     public:
     VectorMaths(){}

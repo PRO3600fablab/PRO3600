@@ -18,6 +18,9 @@ InputBox::InputBox(sf::Color colorarg,int loc0,int loc1, int siz0, int siz1,sf::
     //rectangle
     color=colorarg;
     initRectangles(loc0,loc1);
+    //interval set to min and max int available
+    borneValue[0]=-32767;
+    borneValue[1]=32767;
 
 };
 
@@ -101,7 +104,11 @@ void InputBox::chooseColor(int i){
         boxIncr.setFillColor(color);
         boxDecr.setFillColor(sf::Color::White);
     };
+};
 
+void InputBox::changeInterval(int min, int max){
+    borneValue[0]=min;
+    borneValue[1]=max;
 };
 
 void InputBox::drawTo(sf::RenderWindow &window){
@@ -140,6 +147,16 @@ void InputBox::render(sf::RenderWindow &window, bool clicked){
     else{
         isSelected=detected;
     };
+    
+
+    //we verify that the value is inside the authorized interval
+    if(value>borneValue[1]){
+        value=borneValue[1];
+    };
+    if(value<borneValue[0]){
+        value=borneValue[0];
+    };
+
     valueText.setString(std::to_string(value));//updating the value displayed
     drawTo(window);
     *renderValue = value;

@@ -62,7 +62,7 @@ int main()
     bool dogYValue = false;
     bool * dogXValuePtr = & dogXValue;
     bool * dogYValuePtr = & dogYValue; 
-    ButtonSwitch dogButtonX(14,sf::Color::White,false,400,120,80,40,"Static","Not static",dogXValuePtr);
+    ButtonSwitch dogButtonX(14,sf::Color::White,false,320,120,80,40,"Static","Not static",dogXValuePtr);
     dogButtonX.setFont(arialFont);
     ButtonSwitch dogButtonY(14,sf::Color::White,false,500,120,80,40,"Static","Not static",dogYValuePtr);
     dogButtonY.setFont(arialFont);
@@ -99,7 +99,7 @@ int main()
     xyCoordTxt.setPosition(sf::Vector2f(20,80));
     xyCoordTxt.setColor(sf::Color(255,255,255));
 
-    sf::Text dogTxt("Rotation dog, X dog and Y dog",arialFont,20);
+    sf::Text dogTxt("Degree of liberty in X axis and Y axis",arialFont,20);
     dogTxt.setPosition(sf::Vector2f(300,80));
     dogTxt.setColor(sf::Color(255,255,255));
 
@@ -119,6 +119,29 @@ int main()
     sceneList.push_back(scene1);
     textSceneList.push_back(textScene1);
 
+    //image list for scene 1
+    //vector<sf::Texture> imageSceneList1;
+    sf::Texture xAxisDOLTexture; 
+    sf::Sprite xAxisDOLSprite; 
+    if (!xAxisDOLTexture.loadFromFile("./srcImage/XAxisDOL.png")){
+        return -1;
+    };
+    xAxisDOLSprite.setTexture(xAxisDOLTexture);
+    xAxisDOLSprite.setScale(0.5,0.5);
+    xAxisDOLSprite.setPosition(300,160);
+
+    sf::Texture yAxisDOLTexture; 
+    sf::Sprite yAxisDOLSprite; 
+    if (!yAxisDOLTexture.loadFromFile("./srcImage/YAxisDOL.png")){
+        return -1;
+    };
+    yAxisDOLSprite.setTexture(yAxisDOLTexture);
+    yAxisDOLSprite.setScale(0.5,0.5);
+    yAxisDOLSprite.setPosition(500,160);
+
+
+    //
+    //
     //scene 2
     Scene scene2 = Scene();
 
@@ -148,8 +171,8 @@ int main()
     float secondLinkParametreValue=0;
     float * firstLinkParametreValuePtr=&firstLinkParametreValue;
     float * secondLinkParametreValuePtr=&secondLinkParametreValue;
-    InputBox firstParameterInput(sf::Color::White,10,130, 80, 30, arialFont,firstLinkParametreValuePtr);
-    InputBox secondParameterInput(sf::Color::White,140,130, 80, 30, arialFont,secondLinkParametreValuePtr);
+    InputBox firstParameterInput(sf::Color::White,10,260, 80, 30, arialFont,firstLinkParametreValuePtr);
+    InputBox secondParameterInput(sf::Color::White,140,260, 80, 30, arialFont,secondLinkParametreValuePtr);
 
     scene2.addWidget(&addLinkButton);
     scene2.addWidget(&removeLinkButton);
@@ -177,16 +200,40 @@ int main()
     profilSelection.setPosition(sf::Vector2f(20,360));
     profilSelection.setColor(sf::Color(255,255,255));
 
+    sf::Text linkMatrixText("",arialFont,20);
+    linkMatrixText.setPosition(sf::Vector2f(400,360));
+    linkMatrixText.setColor(sf::Color(255,255,255));
+
     TextScene textScene2=TextScene();
     textScene2.addText( &node1et2 );
     textScene2.addText( &addLinkText );//title
     textScene2.addText( &aAndBValue );
     textScene2.addText( &profilSelection );
+    textScene2.addText( &linkMatrixText);
+    string linkMatrixString;
 
     sceneList.push_back(scene2);
     textSceneList.push_back(textScene2);
 
-    
+    //image list for scene 2
+    //vector<sf::Texture> imageSceneList2;
+    sf::Texture roundSectionTexture; 
+    sf::Sprite roundSectionSprite; 
+    if (!roundSectionTexture.loadFromFile("./srcImage/RoundSection.png")){
+        return -1;
+    };
+    roundSectionSprite.setTexture(roundSectionTexture);
+    roundSectionSprite.setScale(0.5,0.5);
+    roundSectionSprite.setPosition(300,160);
+
+    sf::Texture squareSectionTexture; 
+    sf::Sprite squareSectionSprite; 
+    if (!squareSectionTexture.loadFromFile("./srcImage/SquareSection.png")){
+        return -1;
+    };
+    squareSectionSprite.setTexture(squareSectionTexture);
+    squareSectionSprite.setScale(0.5,0.5);
+    squareSectionSprite.setPosition(500,160);
 
     //input
     bool mouseClick = false;
@@ -204,18 +251,32 @@ int main()
 
         }
         mouseClick=sf::Mouse::isButtonPressed(sf::Mouse::Left);
-        window.clear(sf::Color(20,20,20));
+        window.clear(sf::Color(140,140,140));
 
         //rendering the proper scene
         sceneList[mode].render(window,mouseClick);
         textSceneList[mode].render(window);
-        
-        
+        if(mode==0){
+            window.draw(xAxisDOLSprite);
+            window.draw(yAxisDOLSprite);
+        };
+        if(mode==1){
+            window.draw(roundSectionSprite);
+            window.draw(squareSectionSprite);
+        };
+
         nodeCoord[0] = XlocValue;
         nodeCoord[1] = YlocValue;
 
         if(nextButtonValue){
             mode=1;
+            firstNode.changeInterval(1,nbNode);
+            secondNode.changeInterval(1,nbNode);
+            adjaMat.resize(nbNode);
+            for(int j = 0; j<nbNode; j++){
+                adjaMat[j].resize(nbNode);
+            }
+            //linkSpec.resize(nbNode);
         }
         
         window.display();
@@ -229,10 +290,22 @@ int main()
             nodeList[nbNode-1][0]=nodeCoord[0];
             nodeList[nbNode-1][1]=nodeCoord[1];
         };
+
+        if(addLinkValue){
+            adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = true;
+
+            adjaMat[(int)secondNodeValue - 1][(int)firstNodeValue - 1] = true;
+        }
+        if(removeLinkValue){
+            adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = false;
+            adjaMat[(int)secondNodeValue - 1][(int)firstNodeValue - 1] = false;
+        }
         
         
         nodesLtext = " Nodes \n"+displayVect(nodeList);
         nodes.setString(nodesLtext);
+        linkMatrixString = " Link matrix \n"+displayVect(adjaMat);
+        linkMatrixText.setString(linkMatrixString);
         
         
     }
