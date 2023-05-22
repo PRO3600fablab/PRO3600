@@ -1,1 +1,1 @@
-target_include_directories(RDM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(RDMLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

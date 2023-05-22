@@ -38,7 +38,7 @@ return deplacement;
 
 
 
-int main(){
+/*int main(){
     cout << "test 1" << endl << endl;
 
     //création de la matrice de Liaison 
@@ -87,3 +87,4 @@ int main(){
     cout << "fin du programme" << endl;
     return 0;
 }
+*/
