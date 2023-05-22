@@ -33,24 +33,24 @@ string displayVect(vector<vector<float>> v){
 string displayVect(vector<vector<bool>> v){
     string answer = "";
         for(int k = 0; k<v.size();k++){
-            cout<<"[";
+            //cout<<"[";
             answer +="node "+std::to_string(k)+" : [ ";
             for(int i = 0;i<(v[k]).size();i++){
-                cout<<v[k][i];
-                cout<<" ";
+                //cout<<v[k][i];
+                //cout<<" ";
                 answer += std::to_string(v[k][i]);
                 answer +=" ";
                 if(i!=(v[k]).size()-1){
                     answer+="; ";
                 }
             }
-            cout<<"]";
+            //cout<<"]";
             answer +="]";
-            cout<<"\n";
+            //cout<<"\n";
             answer +="\n";
 
         }
-        cout<<"\n";
+        //cout<<"\n";
         answer +="\n";
         return answer;
     };

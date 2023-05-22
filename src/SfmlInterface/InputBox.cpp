@@ -156,8 +156,17 @@ void InputBox::render(sf::RenderWindow &window, bool clicked){
     if(value<borneValue[0]){
         value=borneValue[0];
     };
+    //creating the string
+    std::string a;
+    a = std::to_string(value);
+    if (a.size()>3){
+        int k = a.find_first_of(".");
+        a=a.substr(0, k);
+    };
 
-    valueText.setString(std::to_string(value));//updating the value displayed
+
+
+    valueText.setString(a);//updating the value displayed
     drawTo(window);
     *renderValue = value;
 };

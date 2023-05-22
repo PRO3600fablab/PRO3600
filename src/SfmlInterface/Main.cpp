@@ -6,6 +6,7 @@
 #include "./headers/ButtonSwitch.h"
 #include "./headers/InputBox.h"
 #include "VectorMaths.cpp"
+#include "./../RDM/headers/assemblage.h"
 using namespace std;
 
 int main()
@@ -25,6 +26,10 @@ int main()
     // i=0 for rectangle,1 for circle; a and b are dimensions; L is length beetwen nodes; teta is the angle between the two nodes;
     // and E is the young module
     vector<vector<vector<float>>> linkSpec;
+
+    //result of matElementaire
+    vector<vector<vector<vector<float>>>> resultMatElem;
+    vector<vector<float>> assemblageMatrix;
     
     
     //mode choice
@@ -111,6 +116,10 @@ int main()
     xyCoordTxt.setPosition(sf::Vector2f(20,80));
     xyCoordTxt.setColor(sf::Color(255,255,255));
 
+    sf::Text xyForceTxt("X and Y force component :",arialFont,20);
+    xyForceTxt.setPosition(sf::Vector2f(20,170));
+    xyForceTxt.setColor(sf::Color(255,255,255));
+
     sf::Text dogTxt("Degree of liberty in X axis and Y axis",arialFont,20);
     dogTxt.setPosition(sf::Vector2f(300,80));
     dogTxt.setColor(sf::Color(255,255,255));
@@ -124,6 +133,7 @@ int main()
     textScene1.addText( &titleTxt );
     textScene1.addText( &xyCoordTxt );
     textScene1.addText( &dogTxt );
+    textScene1.addText(&xyForceTxt);
     
     string nodesLtext ; 
 
@@ -328,6 +338,8 @@ int main()
                 linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][j]=1;
                 linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][j]=1;
             }
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][2]=0.5;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][2]=0.5;
         }
         if(removeLinkValue){
             adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = false;
@@ -339,6 +351,11 @@ int main()
         nodes.setString(nodesLtext);
         linkMatrixString = " Link matrix \n"+displayVect(adjaMat);
         linkMatrixText.setString(linkMatrixString);
+
+        if(renderCalculsValueBool){
+            assemblageMatrix=assemblage(linkSpec, adjaMat,nodeDOF,nodeForce);
+            afficher(assemblageMatrix);
+        };
         
         
     }
