@@ -30,6 +30,7 @@ int main()
     //result of matElementaire
     vector<vector<vector<vector<float>>>> resultMatElem;
     vector<float> assemblageMatrix;
+    vector<float> graphForOpenscad;//x and y start x and y stop type inside diametre outside diametre
     
     
     //mode choice
@@ -358,6 +359,30 @@ int main()
                 std::cout<<std::to_string(assemblageMatrix[i]);
                 std::cout<<"\n";
             }
+
+            //creating the vector 
+            graphForOpenscad.resize(nbNode);
+            for(int j; j<nbNode;j++){
+                graphForOpenscad.resize(7);
+            }
+            int nbLiaison = 0;
+            for(int k1; k1<nbNode;k1++){
+                for(int k2;k2<k1;k2++){
+                    if(adjaMat[k1][k2]){
+                        nbLiaison++;
+                        graphForOpenscad.resize(nbLiaison);
+                        graphForOpenscad[nbLiaison-1].resize(7);
+                        graphForOpenscad[nbLiaison-1][0]=nodeList[k1][0];
+                        graphForOpenscad[nbLiaison-1][1]=nodeList[k1][0];
+                        graphForOpenscad[nbLiaison-1][2]=nodeList[k2][1];
+                        graphForOpenscad[nbLiaison-1][3]=nodeList[k2][1];
+                        graphForOpenscad[nbLiaison-1][4]=linkSpec[k1][k2][0];
+                        graphForOpenscad[nbLiaison-1][5]=linkSpec[k1][k2][1];
+                        graphForOpenscad[nbLiaison-1][6]=linkSpec[k1][k2][2];
+                    }
+                }
+            }
+        }
         
         
     }
