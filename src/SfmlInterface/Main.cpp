@@ -354,8 +354,8 @@ int main()
         if(renderCalculsValueBool){
             assemblageMatrix=assemblage(linkSpec, adjaMat,nodeDOF,nodeForce);
             for(int i = 0; i<assemblageMatrix.size();i++){
-                std::cout<<std::to_string(assemblageMatrix[i][0]);
-                std::cout<<std::to_string(assemblageMatrix[i][1]);
+                std::cout<<std::to_string(assemblageMatrix[i]);
+                std::cout<<std::to_string(assemblageMatrix[i]);
                 std::cout<<"\n";
             }
         
