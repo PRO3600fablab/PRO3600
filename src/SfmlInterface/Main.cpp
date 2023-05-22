@@ -6,6 +6,7 @@
 #include "./headers/ButtonSwitch.h"
 #include "./headers/InputBox.h"
 #include "VectorMaths.cpp"
+#include <cmath>
 #include "./../RDM/headers/assemblage.h"
 using namespace std;
 
@@ -30,7 +31,7 @@ int main()
     //result of matElementaire
     vector<vector<vector<vector<float>>>> resultMatElem;
     vector<float> assemblageMatrix;
-    vector<float> graphForOpenscad;//x and y start x and y stop type inside diametre outside diametre
+    vector<vector<float>> graphForOpenscad;//x and y start x and y stop type inside diametre outside diametre
     
     
     //mode choice
@@ -334,12 +335,35 @@ int main()
         if(addLinkValue){
             adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = true;
             adjaMat[(int)secondNodeValue - 1][(int)firstNodeValue - 1] = true;
+            /* basic values
             for(int j=0;j<6;j++){
                 linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][j]=1;
                 linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][j]=1;
             }
             linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][2]=0.5;
             linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][2]=0.5;
+            */
+            // i a b L teta E
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][0]=1;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][0]=1;
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][1]=firstLinkParametreValue;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][1]=firstLinkParametreValue;
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][2]=secondLinkParametreValue;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][2]=secondLinkParametreValue;
+            // calculing distance
+            float xcompo = pow((nodeList[(int)secondNodeValue - 1][0]-nodeList[(int)firstNodeValue - 1][0]),2);
+            float ycompo = pow((nodeList[(int)secondNodeValue - 1][1]-nodeList[(int)firstNodeValue - 1][1]),2);
+            float distance = sqrt(xcompo+ycompo);
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][3]=distance;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][3]=distance;
+            // calculing teta
+            float dotProduct = nodeList[(int)secondNodeValue - 1][0]-nodeList[(int)firstNodeValue - 1][0];
+            float cosangle = dotProduct/distance;
+            float angleBeam = acos(cosangle);
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][4]=angleBeam;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][4]=angleBeam;
+            linkSpec[(int)firstNodeValue - 1][(int)secondNodeValue - 1][5]=210000;
+            linkSpec[(int)secondNodeValue - 1][(int)firstNodeValue - 1][5]=210000;
         }
         if(removeLinkValue){
             adjaMat[(int)firstNodeValue - 1][(int)secondNodeValue - 1] = false;
@@ -361,10 +385,6 @@ int main()
             }
 
             //creating the vector 
-            graphForOpenscad.resize(nbNode);
-            for(int j; j<nbNode;j++){
-                graphForOpenscad.resize(7);
-            }
             int nbLiaison = 0;
             for(int k1; k1<nbNode;k1++){
                 for(int k2;k2<k1;k2++){
@@ -388,5 +408,5 @@ int main()
     }
     std::cout<<"Hello world";
     return 0;
-	}
 }
+
