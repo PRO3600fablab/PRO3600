@@ -17,7 +17,7 @@ int main()
     int nbNode = 0;
     //liste des points
     vector<vector<float>> nodeList;
-    vector<vector<bool>> nodeDOF;
+    vector<bool> nodeDOF;
     vector<float> nodeForce; // x and y coordinates
     // matrice d adjacence 
     vector<vector<bool>> adjaMat;
@@ -29,7 +29,7 @@ int main()
 
     //result of matElementaire
     vector<vector<vector<vector<float>>>> resultMatElem;
-    vector<vector<float>> assemblageMatrix;
+    vector<float> assemblageMatrix;
     
     
     //mode choice
@@ -319,10 +319,9 @@ int main()
             nodeList[nbNode-1][1]=nodeCoord[1];
 
             //degre of freedom vector
-            nodeDOF.resize(nbNode);
-            nodeDOF[nbNode-1].resize(2);
-            nodeDOF[nbNode-1][0]=dogXValue;
-            nodeDOF[nbNode-1][1]=dogYValue;
+            nodeDOF.resize(2*nbNode);
+            nodeDOF[2*nbNode-2]=dogXValue;
+            nodeDOF[2*nbNode-1]=dogYValue;
 
             //adding the force
             nodeForce.resize(2*nbNode);
@@ -354,8 +353,11 @@ int main()
 
         if(renderCalculsValueBool){
             assemblageMatrix=assemblage(linkSpec, adjaMat,nodeDOF,nodeForce);
-            afficher(assemblageMatrix);
-        };
+            for(int i = 0; i<assemblageMatrix.size();i++){
+                std::cout<<std::to_string(assemblageMatrix[i][0]);
+                std::cout<<std::to_string(assemblageMatrix[i][1]);
+                std::cout<<"\n";
+            }
         
         
     }
