@@ -19,5 +19,5 @@ target_link_libraries(guilib sfml-graphics)
 
 add_executable(sfml-app Main.cpp)
 
-target_link_libraries(sfml-app RDM sfml-graphics guilib)
+target_link_libraries(sfml-app RDMLIB sfml-graphics guilib)
 
