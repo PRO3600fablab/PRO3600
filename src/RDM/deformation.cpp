@@ -44,7 +44,7 @@ vector<float> VectContrainte(vector<float> VectDepl, float cp, float E)
     
 }
 
-
+/*
 int main() {
 
     cout << "début" << endl;
@@ -60,4 +60,5 @@ int main() {
 
     cout << "fin" << endl;
     }
+    */
     
