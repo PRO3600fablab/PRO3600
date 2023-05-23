@@ -95,6 +95,10 @@ void InputBox::setFont(sf::Font &font){
     unityText.setFont(font);
 };
 
+void InputBox::setIncrement(float f){
+    increment = f;
+};
+
 //render function
 void InputBox::chooseColor(int i){
     //if selected we choose the brighter color
@@ -140,10 +144,10 @@ void InputBox::render(sf::RenderWindow &window, bool clicked){
     int detected = detect(window);
     chooseColor(detected);
     if(detected == 2 && clicked && not(isSelected==2)){
-        value+=1;
+        value+=increment;
     }
     else if(detected==3 && clicked && not(isSelected==3)){
-        value-=1;
+        value-=increment;
     }
     else if(detected==0&&clicked){
         //we need to read the input from the user
@@ -174,9 +178,9 @@ void InputBox::render(sf::RenderWindow &window, bool clicked){
     //creating the string
     std::string a;
     a = std::to_string(value);
-    if (a.size()>3){
+    if (a.size()>4){
         int k = a.find_first_of(".");
-        a=a.substr(0, k);
+        a=a.substr(0, std::max(4,k));
     };
 
 

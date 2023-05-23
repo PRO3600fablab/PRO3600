@@ -25,6 +25,8 @@ class InputBox : public Widget{
     //getter & setter
     void setFont(sf::Font &font);
 
+    void setIncrement(float f);
+
     // changing the interval of the value
     void changeInterval(int min, int max);
 
@@ -50,6 +52,7 @@ class InputBox : public Widget{
     int isSelected = 0;
     bool isReading=false;// is true when the text area is clicked so the button read the input to change the value
     //value contained in the widget
+    float increment=1;
     float value=0;
     int borneValue[2];
     //shapes and color

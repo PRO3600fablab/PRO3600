@@ -29,7 +29,6 @@ int main()
     vector<vector<vector<float>>> linkSpec;
 
     //result of matElementaire
-    vector<vector<vector<vector<float>>>> resultMatElem;
     vector<float> assemblageMatrix;
     vector<vector<float>> graphForOpenscad;//x and y start x and y stop type inside diametre outside diametre
     
@@ -198,7 +197,9 @@ int main()
     InputBox firstParameterInput(sf::Color::White,10,260, 80, 30, arialFont,firstLinkParametreValuePtr);
     InputBox secondParameterInput(sf::Color::White,140,260, 80, 30, arialFont,secondLinkParametreValuePtr);
     firstParameterInput.changeInterval(0,32767);
+    firstParameterInput.setIncrement(0.01);
     secondParameterInput.changeInterval(0,32767);
+    secondParameterInput.setIncrement(0.01);
 
 
     scene2.addWidget(&addLinkButton);
@@ -295,7 +296,7 @@ int main()
         nodeCoord[0] = XlocValue;
         nodeCoord[1] = YlocValue;
 
-        if(nextButtonValue){
+        if(nextButtonValue && mode==0){
             mode=1;
             firstNode.changeInterval(1,nbNode);
             secondNode.changeInterval(1,nbNode);
@@ -314,14 +315,14 @@ int main()
         
         
         if(addNodeValue){
-            std::cout<<" Adding the node\n";
+            //std::cout<<" Adding the node\n";
             nbNode+=1;
             // adding all the info of the node to the matrix
             //adjacence matrix
             nodeList.resize(nbNode);
             nodeList[nbNode-1].resize(2);
-            nodeList[nbNode-1][0]=nodeCoord[0];
-            nodeList[nbNode-1][1]=nodeCoord[1];
+            nodeList[nbNode-1][0]=XlocValue;
+            nodeList[nbNode-1][1]=YlocValue;
 
             //degre of freedom vector
             nodeDOF.resize(2*nbNode);
@@ -380,9 +381,9 @@ int main()
         linkMatrixText.setString(linkMatrixString);
 
         if(renderCalculsValueBool){
-            assemblageMatrix=assemblage(linkSpec, adjaMat,nodeDOF,nodeForce);
+            std::cout<<"Vecteur deplacement : \n";
+            assemblageMatrix=assemblage(linkSpec,adjaMat,nodeDOF,nodeForce);
             for(int i = 0; i<assemblageMatrix.size();i++){
-                std::cout<<std::to_string(assemblageMatrix[i]);
                 std::cout<<std::to_string(assemblageMatrix[i]);
                 std::cout<<"\n";
             }

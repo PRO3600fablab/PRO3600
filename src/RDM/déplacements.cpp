@@ -203,9 +203,9 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
     
     //calcule de U2 = K2^-1 F2
         U2 = calculMat(K2,F2);
-        cout << "affichier U2" << endl << endl;
-        displayV(U2);
-        cout << endl;
+        //cout << "affichier U2" << endl << endl;
+        //displayV(U2);
+        //cout << endl;
     //vector<float> U2 = calculMat(InvMat(taille,K2),F2);
 
     //reconstitution du vecteur déplacement U
