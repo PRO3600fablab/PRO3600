@@ -57,6 +57,6 @@ class InputBox : public Widget{
     sf::RectangleShape contourText;//text input
     sf::RectangleShape boxIncr;//background for increase
     sf::RectangleShape boxDecr;//background for decrease 
-    sf::RectangleShape arrowIncr;//arrow to increase by one the value
-    sf::RectangleShape arroxDecr;//arrow to decrease by one the value
+    sf::CircleShape arrowIncr;//arrow to increase by one the value
+    sf::CircleShape arrowDecr;//arrow to decrease by one the value
 };

@@ -197,6 +197,9 @@ int main()
     float * secondLinkParametreValuePtr=&secondLinkParametreValue;
     InputBox firstParameterInput(sf::Color::White,10,260, 80, 30, arialFont,firstLinkParametreValuePtr);
     InputBox secondParameterInput(sf::Color::White,140,260, 80, 30, arialFont,secondLinkParametreValuePtr);
+    firstParameterInput.changeInterval(0,32767);
+    secondParameterInput.changeInterval(0,32767);
+
 
     scene2.addWidget(&addLinkButton);
     scene2.addWidget(&removeLinkButton);
@@ -393,8 +396,8 @@ int main()
                         graphForOpenscad.resize(nbLiaison);
                         graphForOpenscad[nbLiaison-1].resize(7);
                         graphForOpenscad[nbLiaison-1][0]=nodeList[k1][0];
-                        graphForOpenscad[nbLiaison-1][1]=nodeList[k1][0];
-                        graphForOpenscad[nbLiaison-1][2]=nodeList[k2][1];
+                        graphForOpenscad[nbLiaison-1][1]=nodeList[k1][1];
+                        graphForOpenscad[nbLiaison-1][2]=nodeList[k2][0];
                         graphForOpenscad[nbLiaison-1][3]=nodeList[k2][1];
                         graphForOpenscad[nbLiaison-1][4]=linkSpec[k1][k2][0];
                         graphForOpenscad[nbLiaison-1][5]=linkSpec[k1][k2][1];

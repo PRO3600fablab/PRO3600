@@ -48,8 +48,20 @@ void InputBox::initRectangles(int loc0, int loc1){// we init all the 3 rectangle
     boxDecr.setOutlineThickness(2);
     //arrow increase init
         //for the proportion the height is 1/3 and the width is 1/3 and the triagnle is centered
-    sf::ConvexShape arrowIncr(3);
+    arrowIncr = sf::CircleShape (1+size.y/6,3);
+    sf::Vector2f triangleLoc1(loc0+(1+proportion)*size.x/2,loc1+0.15*size.y);
+    arrowIncr.setPosition(triangleLoc1);
     arrowIncr.setFillColor(sf::Color::Black);
+
+    //arrow decrease init
+        //for the proportion the height is 1/3 and the width is 1/3 and the triagnle is centered
+    arrowDecr = sf::CircleShape (1+size.y/6,3);
+    sf::Vector2f triangleLoc2(loc0+(1+proportion)*size.x/2+2*size.y/6,loc1+0.90*size.y);
+    arrowDecr.setPosition(triangleLoc2);
+    arrowDecr.setRotation(180.f);
+    arrowDecr.setFillColor(sf::Color::Black);
+
+    /* not working...
         //we need to create the sf vector for the 3 points
     sf::Vector2f arrow0(location.x+size.x*(5/6),location.y+1/6*size.y);
     sf::Vector2f arrow1(location.x+size.x*(5/9),location.y+2/6*size.y);
@@ -57,6 +69,8 @@ void InputBox::initRectangles(int loc0, int loc1){// we init all the 3 rectangle
     arrowIncr.setPoint(0,arrow0);
     arrowIncr.setPoint(1,arrow1);
     arrowIncr.setPoint(2,arrow2);
+    */
+
 
 
 };
@@ -116,6 +130,7 @@ void InputBox::drawTo(sf::RenderWindow &window){
     window.draw(boxDecr);
     window.draw(boxIncr);
     window.draw(arrowIncr);
+    window.draw(arrowDecr);
     window.draw(valueText);
     //window.draw(unityText);
 };
