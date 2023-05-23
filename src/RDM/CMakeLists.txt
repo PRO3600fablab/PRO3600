@@ -6,4 +6,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
 include_directories(/usr/include/eigen3)
 add_library(RDMLIB assemblage.cpp)
 add_subdirectory(headers)
-#add_executable(assemblage assemblage.cpp)
+add_executable(assemblage assemblage1.cpp)
+

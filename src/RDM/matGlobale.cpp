@@ -9,13 +9,16 @@ using namespace std;
 
 //fonction assemblage de la matrice de rigidité globale version V3
 
-void matriceGlobale(vector<vector<vector<vector<float>>>> matElements,
+ vector<vector<vector<vector<float>>>> matriceGlobale(vector<vector<vector<vector<float>>>> matElements,
                     vector<vector<bool>> matLiaison,
                     vector<vector<vector<vector<float>>>> K){
+
+
     int n = K.size();
     for (int i = 0; i < n; i++) {
         for (int j = i; j < n; j++) {
             if (matLiaison[i][j]) {
+    
                 K[i][i][0][0] += matElements[i][j][0][0];
                 K[i][i][0][1] += matElements[i][j][0][1];
                 K[i][i][1][0] += matElements[i][j][1][0];
@@ -35,14 +38,17 @@ void matriceGlobale(vector<vector<vector<vector<float>>>> matElements,
                 K[j][j][0][1] += matElements[i][j][2][3];
                 K[j][j][1][0] += matElements[i][j][3][2];
                 K[j][j][1][1] += matElements[i][j][3][3];
+
+
             }
         }
     }
+    return K;
 }
 
-/*
+
 //afficher la matrice K
-void afficher(vector<vector<vector<vector<float>>>> K) {
+void afficherK(vector<vector<vector<vector<float>>>> K) {
     for(int i=0;i<K.size();i++) {
         for(int a=0; a<2; a++){
             for(int j=0;j<K.size();j++) {
@@ -52,7 +58,7 @@ void afficher(vector<vector<vector<vector<float>>>> K) {
         }
         }
 }
-*/
+
 
 
 /*

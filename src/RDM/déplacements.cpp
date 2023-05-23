@@ -175,9 +175,9 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
 
     // retranscrire la matrice de matrice 2*2 (K) simplement en matrice 2*2 (Kintermediaire)
     vector<vector<float>>Kintermediaire = MatConvertion(K);
+    
     //créer la sous matrice K2
     vector<vector<float>>K2 = sousMatrice(U,Kintermediaire);
-
     
 
     int ligne = K2.size();
@@ -200,22 +200,21 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
             K2[i][j] = matInverse(i,j);
         }
     }
-
-    cout << "la matrice inverse est égale à : " << endl;
-    displayM(K2);
     
-
     //calcule de U2 = K2^-1 F2
         U2 = calculMat(K2,F2);
+        cout << "affichier U2" << endl << endl;
+        displayV(U2);
+        cout << endl;
     //vector<float> U2 = calculMat(InvMat(taille,K2),F2);
 
     //reconstitution du vecteur déplacement U
     vector<float> U3(U.size(),0.0);
-    for (int i=0; i<U.size(); i++){
-        int count(-1);
-        if(U[i]!=true){
+    int count=0;
+    for (int w=0; w<U.size(); w++){
+        if(not(U[w])){
+            U3[w]=U2[count];
             count+=1;
-            U3[i]=U2[count];
         }
     }
 
@@ -223,8 +222,8 @@ vector<float> deplacements(vector<bool>U, vector<float>F, vector<vector<vector<v
 }
 
 
-/*
 
+/*
 int main (){
     cout << "test1" << endl;
 
